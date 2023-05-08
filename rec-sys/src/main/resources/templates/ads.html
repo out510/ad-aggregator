@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Ads</title>
+</head>
+<body>
+<div class="container">
+  <h1>Ads</h1>
+  <ul>
+    <li th:each="ad : ${ads}">
+      <ul>
+        <li>Title: <text th:text="${ad.title}"/></li>
+        <li>Description: <text th:text="${ad.description}"/></li>
+        <li>Price: <text th:text="${ad.price}"/></li>
+        <li>
+          <a th:href="${ad.originalUrl}" target="_blank">link</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
