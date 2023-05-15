@@ -1,6 +1,7 @@
 package bsuir.web.adaggregator.domain;
 
-import org.jsoup.Jsoup;
+import bsuir.web.adaggregator.webscrap.WebScrapeConnection;
+import bsuir.web.adaggregator.webscrap.impl.WebScrapeConnectionImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -16,9 +17,11 @@ import java.util.regex.Pattern;
 public class AdFromSumUrl implements Ad {
     private final AdDefault internalAd;
     private final String url;
+    private final WebScrapeConnection webScrapeConnection;
 
-    public AdFromSumUrl(String url) {
+    public AdFromSumUrl(String url, WebScrapeConnection webScrapeConnection) {
         this.url = url;
+        this.webScrapeConnection = new WebScrapeConnectionImpl(url, (WebScrapeConnectionImpl) webScrapeConnection);
         internalAd = new AdDefault();
     }
 
@@ -26,8 +29,8 @@ public class AdFromSumUrl implements Ad {
     public void init() {
         internalAd.setOriginalUrl(this.url);
         try {
-            Document doc = Jsoup.connect(url).get();
-            Optional<Element> enclosingBlock = Optional.ofNullable(doc.getElementById("cols"))
+            Document document = webScrapeConnection.getDocument();
+            Optional<Element> enclosingBlock = Optional.ofNullable(document.getElementById("cols"))
                 .map(e -> e.getElementById("col-mid"))
                 .map(e -> e.getElementsByClass("main-a-view"))
                 .map(Elements::first);
@@ -35,7 +38,7 @@ public class AdFromSumUrl implements Ad {
                 return;
             }
             internalAd.setTitle(
-               enclosingBlock.map(e -> e.getElementsByClass("ma1"))
+                enclosingBlock.map(e -> e.getElementsByClass("ma1"))
                     .map(Elements::first)
                     .map(e -> e.getElementsByClass("block"))
                     .map(Elements::first)

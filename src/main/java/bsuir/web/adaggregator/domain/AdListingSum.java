@@ -1,7 +1,8 @@
 package bsuir.web.adaggregator.domain;
 
 import bsuir.web.adaggregator.exception.NotInitializedException;
-import org.jsoup.Jsoup;
+import bsuir.web.adaggregator.webscrap.WebScrapeConnection;
+import bsuir.web.adaggregator.webscrap.impl.WebScrapeConnectionImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -17,18 +18,18 @@ import java.util.stream.Collectors;
  */
 public class AdListingSum implements AdListing {
 
-    private final String url;
+    private final WebScrapeConnection webScrapeConnection;
     private Integer firsPageNumber;
 
-    public AdListingSum(String url) {
-        this.url = url;
+    public AdListingSum(String url, String username, String password, String proxyAddress, int proxyPort) {
+        this.webScrapeConnection = new WebScrapeConnectionImpl(url, username, password, proxyAddress, proxyPort);
     }
 
     @Override
     public void init() {
         Optional<Document> document;
         try {
-            document = Optional.of(Jsoup.connect(url).get());
+            document = Optional.of(webScrapeConnection.getDocument());
         } catch (IOException e) {
             this.firsPageNumber = 0;
             return;
@@ -44,7 +45,7 @@ public class AdListingSum implements AdListing {
     @Override
     public List<Ad> getAdsFromPage(int pageNumber) throws IOException {
         Set<String> urls = new HashSet<>();
-        Optional.of(Jsoup.connect(String.format("%spage%s", url, pageNumber)).get())
+        Optional.of(webScrapeConnection.getDocument())
             .map(e -> e.getElementsByClass("a-blk"))
             .map(Elements::first)
             .map(e -> e.getElementsByClass("ob-block"))
@@ -57,11 +58,9 @@ public class AdListingSum implements AdListing {
                 )
             );
         return urls.stream()
-            .map(AdFromSumUrl::new)
+            .map(url -> new AdFromSumUrl(url, webScrapeConnection))
             .collect(Collectors.toUnmodifiableList());
     }
-
-
 
     @Override
     public int getFirstPageNumber() {

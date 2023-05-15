@@ -1,6 +1,7 @@
 package bsuir.web.adaggregator.domain;
 
-import org.jsoup.Jsoup;
+import bsuir.web.adaggregator.webscrap.WebScrapeConnection;
+import bsuir.web.adaggregator.webscrap.impl.WebScrapeConnectionImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -15,9 +16,11 @@ import java.util.regex.Pattern;
 public class AdFromUrl implements Ad {
     private final AdDefault internalAd;
     private final String url;
+    private final WebScrapeConnection webScrapeConnection;
 
-    public AdFromUrl(String url) {
+    public AdFromUrl(String url, WebScrapeConnection webScrapeConnection) {
         this.url = url;
+        this.webScrapeConnection = new WebScrapeConnectionImpl(url, (WebScrapeConnectionImpl) webScrapeConnection);
         internalAd = new AdDefault();
     }
 
@@ -25,8 +28,8 @@ public class AdFromUrl implements Ad {
     public void init() {
         internalAd.setOriginalUrl(this.url);
         try {
-            Document doc = Jsoup.connect(url).get();
-            Optional<Element> info = Optional.ofNullable(doc.selectFirst(".lot__table"))
+            Document document = webScrapeConnection.getDocument();
+            Optional<Element> info = Optional.ofNullable(document.selectFirst(".lot__table"))
                 .map(e -> e.getElementsByClass("lot-info"))
                 .flatMap(e -> e.stream().findFirst());
             if (info.isEmpty()) {
@@ -56,7 +59,7 @@ public class AdFromUrl implements Ad {
                     ).orElse(null)
             );
             internalAd.setDescription(
-                Optional.of(doc.getElementsByClass("auction"))
+                Optional.of(document.getElementsByClass("auction"))
                     .flatMap(e -> e.stream().findFirst())
                     .map(e -> e.getElementsByClass("description"))
                     .flatMap(e -> e.stream().findFirst())
