@@ -9,13 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>bsuir.web</groupId>
-    <artifactId>rec-sys</artifactId>
+    <artifactId>ad-aggregator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rec-sys</name>
-    <description>rec-sys</description>
+    <name>ad-aggregator</name>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
