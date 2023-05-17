@@ -1,6 +1,6 @@
 package bsuir.web.adaggregator.controller;
 
-import bsuir.web.adaggregator.domain.Ad;
+import bsuir.web.adaggregator.domain.AdDefault;
 import bsuir.web.adaggregator.schedule.WebScrapingSchedule;
 import bsuir.web.adaggregator.service.AdService;
 import jakarta.annotation.Resource;
@@ -33,9 +33,14 @@ public class AdController {
         return "ads";
     }
 
+    @GetMapping("/ads/scrape")
+    public String showScrapePage() {
+        return "scrape";
+    }
+
     @PostMapping("/scrape")
     public String scrape() {
         webScrapingSchedule.scrapeAds();
-        return "redirect:ads";
+        return "redirect:ads/scrape";
     }
 }
