@@ -12,7 +12,7 @@
   <ul>
     <li th:each="ad : ${pages.getContent()}">
       <ul>
-        <li><text th:text="${ad.title}"/></li>
+        <li><a th:href="@{/ads/{adId}(adId=${ad.id})}" th:text="${ad.title}"></a></li>
         <li><text th:text="${ad.price}"/> р</li>
       </ul>
     </li>

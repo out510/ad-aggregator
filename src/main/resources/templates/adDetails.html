@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${ad.title}"></title>
+    <link href="/css/materialize.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <ul>
+        <li><h4 th:text="${ad.title}"/></li>
+        <li><text th:text="${ad.price}"/> р</li>
+        <li><text th:text="${ad.description}"/></li>
+        <li><a th:href="${ad.originalUrl}">Оригинальное объявление</a></li>
+    </ul>
+</div>
+</body>
+</html>
