@@ -69,15 +69,35 @@ public class SumWebScrappingStrategy implements WebScrappingStrategy {
 
     void saveAds(List<Ad> ads) {
         for (Ad ad : ads) {
-            ad.init();
-            adRepository.save(
-                AdDefault.builder()
-                    .title(ad.getTitle())
-                    .description(ad.getDescription())
-                    .price(ad.getPrice())
-                    .originalUrl(ad.getOriginalUrl())
-                    .build()
-            );
+            try {
+                ad.init();
+            } catch (Exception e) {
+                log.error(
+                    String.format(
+                        "Unable to scrape BULAVKA ad from '%s' because of: ",
+                        ad.getOriginalUrl()
+                    ),
+                    e
+                );
+            }
+            try {
+                adRepository.save(
+                    AdDefault.builder()
+                        .title(ad.getTitle())
+                        .description(ad.getDescription())
+                        .price(ad.getPrice())
+                        .originalUrl(ad.getOriginalUrl())
+                        .build()
+                );
+            } catch (Exception e) {
+                log.error(
+                    String.format(
+                        "Unable to save ad from '%s' because of: ",
+                        ad.getOriginalUrl()
+                    ),
+                    e
+                );
+            }
         }
     }
 }

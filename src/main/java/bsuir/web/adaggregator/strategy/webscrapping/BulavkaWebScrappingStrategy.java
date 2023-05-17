@@ -67,7 +67,17 @@ public class BulavkaWebScrappingStrategy implements WebScrappingStrategy {
 
     void saveAds(List<Ad> ads) {
         for (Ad ad : ads) {
-            ad.init();
+            try {
+                ad.init();
+            } catch (Exception e) {
+                log.error(
+                    String.format(
+                        "Unable to scrape SUM ad from '%s' because of: ",
+                        ad.getOriginalUrl()
+                    ),
+                    e
+                );
+            }
             try {
                 adRepository.save(
                     AdDefault.builder()
