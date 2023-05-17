@@ -1,15 +1,10 @@
 package bsuir.web.adaggregator.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,15 +13,15 @@ import java.time.LocalDateTime;
 @Entity
 public class AdDefault implements Ad {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 500)
     private String title;
+    @Column(length = 2000)
     private String description;
     private Double price;
+    @Column(unique = true)
     private String originalUrl;
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
 
     @Override
     public void init() {
