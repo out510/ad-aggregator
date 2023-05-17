@@ -2,7 +2,7 @@ package bsuir.web.adaggregator.service.imp;
 
 import bsuir.web.adaggregator.domain.Ad;
 import bsuir.web.adaggregator.domain.AdListing;
-import bsuir.web.adaggregator.domain.AdListingImpl;
+import bsuir.web.adaggregator.domain.AdListingBulavka;
 import bsuir.web.adaggregator.domain.AdListingSum;
 import bsuir.web.adaggregator.service.AdService;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Page<Ad> getAds(int page, int pageSize) throws IOException {
-        AdListing adListing = new AdListingImpl(
+        AdListing adListing = new AdListingBulavka(
             "https://bulavka.by/",
             proxyUsername, proxyPassword, proxyAddress, Integer.parseInt(proxyPort)
         );

@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of {@link AdListing} based on {@link AdFromUrl}
+ * Implementation of {@link AdListing} based on {@link AdFromBulavkaUrl}
  */
 public class AdListingSum implements AdListing {
 

@@ -13,12 +13,12 @@ import java.util.regex.Pattern;
 /**
  * Ad that can be initialized by scrapping ad from the external website at provided url
  */
-public class AdFromUrl implements Ad {
+public class AdFromBulavkaUrl implements Ad {
     private final AdDefault internalAd;
     private final String url;
     private final WebScrapeConnection webScrapeConnection;
 
-    public AdFromUrl(String url, WebScrapeConnection webScrapeConnection) {
+    public AdFromBulavkaUrl(String url, WebScrapeConnection webScrapeConnection) {
         this.url = url;
         this.webScrapeConnection = new WebScrapeConnectionImpl(url, (WebScrapeConnectionImpl) webScrapeConnection);
         internalAd = new AdDefault();

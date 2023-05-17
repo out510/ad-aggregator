@@ -14,15 +14,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of {@link bsuir.web.adaggregator.domain.AdListing} based on {@link bsuir.web.adaggregator.domain.AdFromUrl}
+ * Implementation of {@link bsuir.web.adaggregator.domain.AdListing} based on {@link AdFromBulavkaUrl}
  */
-public class AdListingImpl implements AdListing {
-
+public class AdListingBulavka implements AdListing {
     private final WebScrapeConnection webScrapeConnection;
     private Integer firsPageNumber;
     private Integer lastPageNumber;
 
-    public AdListingImpl(String url, String username, String password, String proxyAddress, int proxyPort) {
+    public AdListingBulavka(String url, String username, String password, String proxyAddress, int proxyPort) {
         this.webScrapeConnection = new WebScrapeConnectionImpl(url, username, password, proxyAddress, proxyPort);
     }
 
@@ -70,7 +69,7 @@ public class AdListingImpl implements AdListing {
                 )
             );
         return urls.stream()
-            .map(url -> new AdFromUrl(url, webScrapeConnection))
+            .map(url -> new AdFromBulavkaUrl(url, webScrapeConnection))
             .collect(Collectors.toUnmodifiableList());
     }
 
