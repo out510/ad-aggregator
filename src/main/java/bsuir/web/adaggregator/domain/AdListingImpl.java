@@ -74,7 +74,7 @@ public class AdListingImpl implements AdListing {
     }
 
     @Override
-    public int getFirsPageNumber() {
+    public int getFirstPageNumber() {
         return Optional.ofNullable(firsPageNumber)
             .orElseThrow(
                 () -> new NotInitializedException(

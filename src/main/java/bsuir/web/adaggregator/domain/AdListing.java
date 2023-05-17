@@ -33,7 +33,7 @@ public interface AdListing {
      * @return number of the first page
      * @throws bsuir.web.adaggregator.exception.NotInitializedException when ad listing is not initialized
      */
-    int getFirsPageNumber();
+    int getFirstPageNumber();
 
     /**
      * Get number of the last page in the listing.
