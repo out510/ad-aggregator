@@ -14,15 +14,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of {@link bsuir.web.adaggregator.domain.AdListing} based on {@link bsuir.web.adaggregator.domain.AdFromUrl}
+ * Implementation of {@link AdListing} based on {@link AdFromUrl}
  */
-public class AdListingImpl implements AdListing {
+public class AdListingSum implements AdListing {
 
     private final WebScrapeConnection webScrapeConnection;
     private Integer firsPageNumber;
-    private Integer lastPageNumber;
 
-    public AdListingImpl(String url, String username, String password, String proxyAddress, int proxyPort) {
+    public AdListingSum(String url, String username, String password, String proxyAddress, int proxyPort) {
         this.webScrapeConnection = new WebScrapeConnectionImpl(url, username, password, proxyAddress, proxyPort);
     }
 
@@ -33,24 +32,11 @@ public class AdListingImpl implements AdListing {
             document = Optional.of(webScrapeConnection.getDocument());
         } catch (IOException e) {
             this.firsPageNumber = 0;
-            this.lastPageNumber = 0;
             return;
         }
-        Optional<Elements> pages = document
-            .map(doc -> doc.getElementsByClass("pgn"))
+        this.firsPageNumber = document.map(doc -> doc.getElementsByClass("pager"))
             .map(Elements::first)
-            .map(pageList -> pageList.getElementsByClass("pgn__item"))
-            .filter(pageElements -> !pageElements.isEmpty());
-        if (pages.isEmpty() || pages.get().isEmpty()) {
-            this.firsPageNumber = 0;
-            this.lastPageNumber = 0;
-            return;
-        }
-        this.firsPageNumber = Optional.ofNullable(pages.get().get(0).select("a"))
-            .map(Elements::first)
-            .map(page -> Integer.valueOf(page.text()))
-            .orElse(0);
-        this.lastPageNumber = Optional.ofNullable(pages.get().last().select("a"))
+            .map(e -> e.getElementsByClass("active"))
             .map(Elements::first)
             .map(page -> Integer.valueOf(page.text()))
             .orElse(0);
@@ -60,17 +46,19 @@ public class AdListingImpl implements AdListing {
     public List<Ad> getAdsFromPage(int pageNumber) throws IOException {
         Set<String> urls = new HashSet<>();
         Optional.of(webScrapeConnection.getDocument())
-            .map(document -> document.getElementsByClass("lot-item__title"))
+            .map(e -> e.getElementsByClass("a-blk"))
+            .map(Elements::first)
+            .map(e -> e.getElementsByClass("ob-block"))
             .ifPresent(
                 titles -> titles.forEach(
-                    title -> Optional.ofNullable(title.getElementsByTag("a"))
+                    title -> Optional.of(title.getElementsByTag("a"))
                         .map(Elements::first)
                         .map(e -> e.attr("abs:href"))
                         .ifPresent(urls::add)
                 )
             );
         return urls.stream()
-            .map(url -> new AdFromUrl(url, webScrapeConnection))
+            .map(url -> new AdFromSumUrl(url, webScrapeConnection))
             .collect(Collectors.toUnmodifiableList());
     }
 
@@ -79,20 +67,17 @@ public class AdListingImpl implements AdListing {
         return Optional.ofNullable(firsPageNumber)
             .orElseThrow(
                 () -> new NotInitializedException(
-                    "Ad listing is not initialized. First page number is not set. "
-                    + "Initialize ad listing before accessing the first page"
+                    "Ad listing is not initialized. First page number is not set. " +
+                        "Initialize ad listing before accessing the first page"
                 )
             );
     }
 
     @Override
     public int getLastPageNumber() {
-        return Optional.ofNullable(lastPageNumber)
-            .orElseThrow(
-                () -> new NotInitializedException(
-                    "Ad listing is not initialized. Last page number is not set. "
-                        + "Initialize ad listing before accessing the last page number"
-                )
-            );
+        throw new UnsupportedOperationException(
+            "It's impossible to find the last page of the 'sum.by'. " +
+            "Iterate from the first page until you find an empty page"
+        );
     }
 }
