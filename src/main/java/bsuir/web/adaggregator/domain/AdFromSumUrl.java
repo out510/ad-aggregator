@@ -1,7 +1,7 @@
 package bsuir.web.adaggregator.domain;
 
-import bsuir.web.adaggregator.webscrap.WebScrapeConnection;
-import bsuir.web.adaggregator.webscrap.impl.WebScrapeConnectionImpl;
+import bsuir.web.adaggregator.webscraping.WebScrapeConnection;
+import bsuir.web.adaggregator.webscraping.impl.WebScrapeConnectionImpl;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

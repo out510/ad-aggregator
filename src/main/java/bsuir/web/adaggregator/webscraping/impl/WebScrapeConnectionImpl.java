@@ -1,6 +1,6 @@
-package bsuir.web.adaggregator.webscrap.impl;
+package bsuir.web.adaggregator.webscraping.impl;
 
-import bsuir.web.adaggregator.webscrap.WebScrapeConnection;
+import bsuir.web.adaggregator.webscraping.WebScrapeConnection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 

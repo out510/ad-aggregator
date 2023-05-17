@@ -1,4 +1,4 @@
-package bsuir.web.adaggregator.webscrap;
+package bsuir.web.adaggregator.webscraping;
 
 import org.jsoup.nodes.Document;
 
