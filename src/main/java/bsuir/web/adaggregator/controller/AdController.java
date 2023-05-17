@@ -19,12 +19,17 @@ public class AdController {
     private WebScrapingSchedule webScrapingSchedule;
 
     @GetMapping("/ads")
-    public String showAdsPage(@RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "5") int pageSize,
+    public String showAdsPage(@RequestParam(defaultValue = "1") int page,
+                              @RequestParam(defaultValue = "10") int pageSize,
                               Model model)  {
-        Page<Ad> adPage = adService.getAds(page, pageSize);
-        model.addAttribute("ads", adPage.getContent());
-        model.addAttribute("totalPages", adPage.getTotalPages());
+        Page<AdDefault> adPage = adService.getAds(page - 1, pageSize);
+        model.addAttribute("pages", adPage);
+
+        int start = Math.max(1, adPage.getNumber() - 2);
+        int last = Math.min(start + 6, adPage.getTotalPages());
+        model.addAttribute("start", start);
+        model.addAttribute("last", last);
+
         return "ads";
     }
 

@@ -1,17 +1,20 @@
 package bsuir.web.adaggregator.service.imp;
 
-import bsuir.web.adaggregator.domain.Ad;
+import bsuir.web.adaggregator.domain.AdDefault;
+import bsuir.web.adaggregator.repository.AdRepository;
 import bsuir.web.adaggregator.service.AdService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-
 @Service
+@RequiredArgsConstructor
 public class AdServiceImpl implements AdService {
+    private final AdRepository adRepository;
+
     @Override
-    public Page<Ad> getAds(int page, int pageSize) {
-        return new PageImpl<>(new ArrayList<>());
+    public Page<AdDefault> getAds(int page, int pageSize) {
+        return adRepository.findAll(PageRequest.of(page, pageSize));
     }
 }

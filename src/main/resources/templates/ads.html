@@ -2,26 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Ads</title>
+  <title>Объявления</title>
+  <link href="/css/materialize.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<form action="http://localhost:8080/scrape" method="post">
-  <button name="scrape_button">SCRAPE</button>
-</form>
 <div class="container">
-  <h1>Ads</h1>
+  <h1>Объявления</h1>
   <ul>
-    <li th:each="ad : ${ads}">
+    <li th:each="ad : ${pages.getContent()}">
       <ul>
-        <li>Title: <text th:text="${ad.title}"/></li>
-        <li>Description: <text th:text="${ad.description}"/></li>
-        <li>Price: <text th:text="${ad.price}"/></li>
-        <li>
-          <a th:href="${ad.originalUrl}" target="_blank">link</a>
-        </li>
+        <li><text th:text="${ad.title}"/></li>
+        <li><text th:text="${ad.price}"/> р</li>
       </ul>
     </li>
   </ul>
 </div>
+
+<ul class="pagination container" th:with="start = ${start}, last = ${last}">
+  <li>
+    <a th:href="@{/ads?page=1}" th:text="Первая" aria-label="First"></a>
+  </li>
+
+  <li th:class="${pages.first} ? 'disabled'">
+    <a th:href="${pages.first} ? '#' : @{/ads(page=${pages.getNumber()})}">
+      <i class="material-icons">chevron_left</i>
+    </a>
+  </li>
+
+  <li th:each="page : ${#numbers.sequence(start, last)}" th:class="${page == pages.number + 1} ? 'active'">
+    <a th:href="@{/ads(page=${page})}" th:text="${page}"></a>
+  </li>
+
+  <li th:class="${pages.last} ? 'disabled'">
+    <a th:href="${pages.last} ? '#' : @{/ads(page=${pages.getNumber() + 2})}">
+      <i class="material-icons">chevron_right</i>
+    </a>
+  </li>
+
+  <li>
+    <a th:href="@{/ads(page = ${pages.totalPages})}" th:text="Последняя" aria-label="Last"></a>
+  </li>
+</ul>
+
 </body>
 </html>
