@@ -5,6 +5,11 @@ package bsuir.web.adaggregator.domain;
  */
 public interface Ad {
     /**
+     * Get Id of the ad
+     * @return ad ID
+     */
+    Long getId();
+    /**
      * Get title of the ad
      * @return ad title
      */

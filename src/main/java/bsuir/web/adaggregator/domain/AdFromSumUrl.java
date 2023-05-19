@@ -83,6 +83,11 @@ public class AdFromSumUrl implements Ad {
     }
 
     @Override
+    public Long getId() {
+        return internalAd.getId();
+    }
+
+    @Override
     public String getTitle() {
         return internalAd.getTitle();
     }

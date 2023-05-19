@@ -9,11 +9,27 @@
 <body>
 <div class="container">
     <ul>
-        <li><h4 th:text="${ad.title}"/></li>
-        <li><text th:text="${ad.price}"/> р</li>
-        <li><text th:text="${ad.description}"/></li>
-        <li><a th:href="${ad.originalUrl}">Оригинальное объявление</a></li>
+        <li>
+            <h4 th:text="${ad.title}"/>
+        </li>
+        <li>
+            <text th:text="${ad.price}"/> р
+        </li>
+        <li>
+            <text th:text="${ad.description}"/>
+        </li>
+        <li>
+            <a th:href="${ad.originalUrl}">Оригинальное объявление</a>
+        </li>
     </ul>
+
+    <h6>Похожие объявления</h6>
+    <ul>
+        <li th:each="similarUrl : ${ad.getSimilarAds()}">
+            <a th:href="${similarUrl}" th:text="${similarUrl}"></a>
+        </li>
+    </ul>
+
 </div>
 </body>
 </html>

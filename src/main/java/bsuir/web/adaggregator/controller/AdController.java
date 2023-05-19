@@ -1,6 +1,7 @@
 package bsuir.web.adaggregator.controller;
 
 import bsuir.web.adaggregator.domain.AdDefault;
+import bsuir.web.adaggregator.dto.AdDto;
 import bsuir.web.adaggregator.schedule.WebScrapingSchedule;
 import bsuir.web.adaggregator.service.AdService;
 import jakarta.annotation.Resource;

@@ -75,6 +75,11 @@ public class AdFromBulavkaUrl implements Ad {
     }
 
     @Override
+    public Long getId() {
+        return internalAd.getId();
+    }
+
+    @Override
     public String getTitle() {
         return internalAd.getTitle();
     }

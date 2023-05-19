@@ -51,6 +51,11 @@
             <artifactId>jsoup</artifactId>
             <version>1.15.4</version>
         </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.5.4</version>
+        </dependency>
     </dependencies>
 
     <build>
