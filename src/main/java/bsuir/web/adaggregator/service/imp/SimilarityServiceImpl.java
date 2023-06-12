@@ -7,7 +7,6 @@ import bsuir.web.adaggregator.service.SimilarityService;
 import edu.stanford.nlp.simple.Document;
 import edu.stanford.nlp.simple.Sentence;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Service
@@ -60,18 +58,12 @@ public class SimilarityServiceImpl implements SimilarityService {
 
     // Jaccard Index
     private double calculateSentencesSimilarityIndex(Sentence sentence1, Sentence sentence2) {
-        Set<String> tokens1 = tokenizeText(sentence1.text());
-        Set<String> tokens2 = tokenizeText(sentence2.text());
+        List<String> tokens1 = sentence1.words();
+        List<String> tokens2 = sentence2.words();
         return (double) getIntersectionSize(tokens1, tokens2) / getUnionSize(tokens1, tokens2);
     }
 
-    private Set<String> tokenizeText(String text) {
-        return Stream.of(text.toLowerCase().split("\\W+"))
-            .filter(StringUtils::isNotEmpty)
-            .collect(Collectors.toSet());
-    }
-
-    private long getIntersectionSize(Set<String> words1, Set<String> words2) {
+    private long getIntersectionSize(List<String> words1, List<String> words2) {
         return words1.stream()
             .filter(word1 -> words2.stream().anyMatch(word2 -> areWordsSimilar(word1, word2)))
             .count();
@@ -82,7 +74,7 @@ public class SimilarityServiceImpl implements SimilarityService {
         return word1.equals(word2);
     }
 
-    private int getUnionSize(Set<String> set1, Set<String> set2) {
+    private int getUnionSize(List<String> set1, List<String> set2) {
         Set<String> union = new HashSet<>(set1);
         union.addAll(set2);
         return union.size();
